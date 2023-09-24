@@ -1,28 +1,31 @@
+<style>
+g { color: #7FFFD4 }
+o { color: #FF8C00 }
+r { color: #DC143C }
+y { color: #BDB76B }
+</style>
 # Outline
 1. Блочные элементы
  + [JVM](#JVM)
 
 
-
-
-
-# <a name="Parag"></a>JVM
+# JVM
 
 ## Memory model java (depends on JVM version)
 
 [garbage collection](https://dzone.com/articles/all-you-need-to-know-about-garbage-collection-in-j), [Memory model](https://habr.com/ru/post/510454/), [Examples](https://javadevblog.com/chto-takoe-heap-i-stack-pamyat-v-java.html)
 
-![image.png](https://codahosted.io/docs/IPpkL0eZog/blobs/bl-eDn5Lo0-TU/dda79a732d6d10c0ec5a2c46baaebe8d3d01994751c0da18a785b2b3df3c963cb1e1ef54e24d967694d073eed49608e8511ae549f890c2a800c50cc623e78b6208649f5654c213cc01071b127415e3ad222b7dabd05dd11a7beb021ffcc617caa0b65b7b)![image.png](https://codahosted.io/docs/IPpkL0eZog/blobs/bl-XcV9cSBKIh/52fcd886fdfa99b3bfb58234ebf7751dd5dfae12a8d5b7860e36c5e7c8294f77f060a6f6c830ccfb3c0d577fb40b286f9131e85f53d252d4df8f153391db1ecc4d26039da4ce60826fa343439d0b8187d8e25910d7472667712b2bc803b9d40816a8c814)
+<img height="200" src="files/memory-model.png" width="200"/>
+<img height="200" src="files/memory-model-2.png" width="500"/>
 
-Native Memory — вся доступная системная память.  
-Heap (куча) — объекты и статические переменные. Содержит все объекты приложения.
+<g>Native Memory</g> — вся доступная системная память.  
+<g>Heap</g> (куча) — объекты и статические переменные. Содержит все объекты приложения.
 
--   Переменные объекта - в heap с объектом.
--   Статические переменные - в heap с классом.
+- Переменные объекта - в heap с объектом.
+- Статические переменные - в heap с классом.
+- <y>Eden, S0, S1, Old Generation</y> – Подробнее в главе “Сборка мусора” ниже.
 
-Eden, S0, S1, Old Generation – Подробнее в главе “Сборка мусора” ниже.
-
-Thread Stack — локальные переменные и методы что вызвал поток (стек).
+<g>Thread Stack</g> — локальные переменные и методы что вызвал поток (стек).
 
 -   локальная переменная из методов в объекте – в stack, сам объект в heap.
 -   локальная переменная ссылка на объект – в stack, сам объект в heap.
@@ -30,9 +33,9 @@ Thread Stack — локальные переменные и методы что 
 
 Поток не может совместно использовать примитивную локальную переменную, только передать копию. Если два потока выполняют один и тот же код, они создадут свои копии в стеках. Все данные в стеке GC roots.
 
-Metaspace — с Java 8 заменяет permanent generation — метаданные классов . Это пространство также является общими для всех. Так как metaspace является частью native memory, то его размер зависит от платформы.
+<g>Metaspace</g> — с Java 8 заменяет permanent generation — метаданные классов . Это пространство также является общими для всех. Так как metaspace является частью native memory, то его размер зависит от платформы.
 
-CodeCache — JIT-компилятор компилирует часто исполняемый код, преобразует его в нативный машинный код и кэширует для более быстрого выполнения.
+<g>CodeCache</g> — JIT-компилятор компилирует часто исполняемый код, преобразует его в нативный машинный код и кэширует для более быстрого выполнения.
 
 ## Компиляция
 
@@ -131,20 +134,20 @@ public native int hashCode(), public boolean equals(Object obj)Collections
 
 Переопределение:
 ```Java
-@Ovveride
-public boolean equals(Object o){
-	//reflect
-	if (this == e) return true;
-	// null check
-	if (o == null) reurn false;
-	// class type check and class casting
-	if (getClass() != o.getClass()) return false;	
-	RestConfig that = (RestConfig) o;
-	// field check
-	return connectTimeOut == that.connectTimeOut &&
-		   readTimeOut == this.readTimeOut &&
-		   Objects.equals(url, that.url);
-}
+    @Ovveride
+    public boolean equals(Object o){
+        //reflect
+        if (this == e) return true;
+        // null check
+        if (o == null) reurn false;
+        // class type check and class casting
+        if (getClass() != o.getClass()) return false;	
+        RestConfig that = (RestConfig) o;
+        // field check
+        return connectTimeOut == that.connectTimeOut &&
+               readTimeOut == this.readTimeOut &&
+               Objects.equals(url, that.url);
+    }
 ```
 -   Рефлексивность - a.equals(a)
 -   Симметрия - a.equals(b), то b.equals(a)
